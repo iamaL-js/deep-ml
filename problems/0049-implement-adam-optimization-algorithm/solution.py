@@ -1,27 +1,36 @@
-import numpy as np
+import torch
 
-def adam_optimizer(f, grad, x0, learning_rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-8, num_iterations=10):
-    # Note: `f` is accepted only for interface parity with the PyTorch/Tinygrad
-    # variants, which derive gradients from it via autograd. This version uses
-    # `grad` only — the objective value `f` is never evaluated.
-    # Your code here
-    x = np.array(x0, dtype=float)
-    m = np.zeros_like(x)
-    v = np.zeros_like(x)
+def adam_optimizer(f, grad, x0, learning_rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-8, num_iterations=10) -> torch.Tensor:
+    """
+    Implements Adam optimization algorithm using PyTorch's built-in optimizer.
 
-    for t in range(1, num_iterations+1):
-        g = grad(x)
+    Args:
+        f: The objective function to be optimized
+        grad: A function that computes the gradient (unused; autograd is used instead)
+        x0: Initial parameter values (torch.Tensor)
+        learning_rate: The step size (default: 0.001)
+        beta1: Exponential decay rate for the first moment estimates (default: 0.9)
+        beta2: Exponential decay rate for the second moment estimates (default: 0.999)
+        epsilon: A small constant for numerical stability (default: 1e-8)
+        num_iterations: Number of iterations to run the optimizer (default: 10)
 
-        m = beta1 * m + (1-beta1) * g
-        v = beta2 * v + (1-beta2) * g**2
+    Returns:
+        torch.Tensor: Optimized parameters
+    """
+    x = x0.detach().clone().requires_grad_(True)
 
-        m_hat = m / (1-beta1**t)
-        v_hat = v / (1-beta2**t)
+    optimizer = torch.optim.Adam(
+        [x],
+        lr = learning_rate,
+        betas = (beta1, beta2),
+        eps = epsilon
+    )
+    for i in range(num_iterations):
+        optimizer.zero_grad()
 
-        g = m_hat / (np.sqrt(v_hat)+epsilon)
+        loss = f(x)
+        loss.backward()
+
+        optimizer.step()
+    return x.detach()
         
-        x -= learning_rate*g
-    return x
-
-
-

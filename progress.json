@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T12:31:12.479Z",
+  "generated_at": "2026-11-25T14:18:20.930Z",
   "items": {
     "problem:49": {
       "kind": "problem",
@@ -52,6 +52,19 @@
       "last_pushed_at": "2026-11-22T11:52:06.902Z",
       "language": "python",
       "lines": 18
+    },
+    "problem:53": {
+      "kind": "problem",
+      "id": "53",
+      "title": "Implement Self-Attention Mechanism",
+      "difficulty": "medium",
+      "category": "Deep Learning",
+      "url": "https://www.deep-ml.com/problems/53",
+      "path": "problems/0053-implement-self-attention-mechanism",
+      "first_solved_at": "2026-11-25T14:18:19.827Z",
+      "last_pushed_at": "2026-11-25T14:18:19.827Z",
+      "language": "python",
+      "lines": 29
     }
   }
 }
